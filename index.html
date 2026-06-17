@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayo Digital Media — Grow Your Online Presence</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --off-white: #f4f1ec;
+    --green: #1aff8c;
+    --green-dim: #0dcc6e;
+    --green-muted: rgba(26,255,140,0.08);
+    --text-muted: #888;
+    --border: rgba(255,255,255,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--green);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--green);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.2s ease, height 0.2s ease;
+    opacity: 0.5;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 5vw;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(16px);
+    background: rgba(10,10,10,0.7);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.1rem;
+    letter-spacing: -0.02em;
+    color: var(--off-white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--green); }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    font-size: 0.82rem; font-weight: 400;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--off-white); }
+  .nav-cta {
+    background: var(--green) !important;
+    color: var(--black) !important;
+    padding: 9px 20px;
+    border-radius: 100px;
+    font-weight: 500 !important;
+    font-size: 0.82rem !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 140px 5vw 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* background glow */
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(26,255,140,0.12) 0%, transparent 65%);
+    top: -100px; right: -150px;
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(26,255,140,0.06) 0%, transparent 65%);
+    bottom: 40px; left: -100px;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.75rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--green);
+    margin-bottom: 28px;
+    opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block; width: 32px; height: 1px;
+    background: var(--green);
+  }
+
+  .hero-headline {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    max-width: 900px;
+    opacity: 0; animation: fadeUp 0.7s 0.35s forwards;
+  }
+  .hero-headline .accent { color: var(--green); }
+  .hero-headline .italic {
+    font-style: italic; font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .hero-sub {
+    max-width: 480px;
+    margin-top: 28px;
+    font-size: 1.05rem; font-weight: 300; line-height: 1.65;
+    color: rgba(244,241,236,0.65);
+    opacity: 0; animation: fadeUp 0.7s 0.5s forwards;
+  }
+
+  .hero-actions {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-top: 44px;
+    opacity: 0; animation: fadeUp 0.7s 0.65s forwards;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent;
+    color: var(--off-white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 400;
+    padding: 14px 28px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+
+  .hero-stats {
+    display: flex; gap: 48px; flex-wrap: wrap;
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    opacity: 0; animation: fadeUp 0.7s 0.8s forwards;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem; font-weight: 800;
+    color: var(--green);
+  }
+  .stat-label {
+    font-size: 0.78rem; font-weight: 300;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* MARQUEE */
+  .marquee-section {
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+    background: var(--green-muted);
+  }
+  .marquee-track {
+    display: flex; gap: 48px;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-item {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    flex-shrink: 0;
+    display: flex; align-items: center; gap: 48px;
+  }
+  .marquee-item::after {
+    content: '✦';
+    font-size: 0.6rem;
+    opacity: 0.5;
+  }
+
+  /* SERVICES */
+  .section { padding: 100px 5vw; }
+  .section-label {
+    font-size: 0.72rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--green);
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 20px;
+  }
+  .section-label::before {
+    content: ''; display: block;
+    width: 24px; height: 1px; background: var(--green);
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800; line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 60px;
+    max-width: 500px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2px;
+  }
+  .service-card {
+    padding: 36px 32px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--green);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .service-card:hover { background: rgba(26,255,140,0.04); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--green);
+    margin-bottom: 20px;
+  }
+  .service-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem; font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .service-desc {
+    font-size: 0.88rem; font-weight: 300;
+    color: rgba(244,241,236,0.55);
+    line-height: 1.6;
+  }
+
+  /* ABOUT */
+  .about-section {
+    padding: 100px 5vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    border-top: 1px solid var(--border);
+  }
+  .about-visual {
+    position: relative;
+    height: 420px;
+  }
+  .about-card {
+    position: absolute;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .about-card-main {
+    top: 0; left: 0; right: 0; bottom: 80px;
+    background: linear-gradient(135deg, rgba(26,255,140,0.08), rgba(26,255,140,0.02));
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .about-card-main .big-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 5rem; font-weight: 800;
+    color: var(--green); line-height: 1;
+    opacity: 0.25;
+    position: absolute; top: 20px; right: 24px;
+  }
+  .about-card-main .label {
+    font-size: 0.78rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .about-card-main .value {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem; font-weight: 700;
+  }
+  .about-card-float {
+    bottom: 0; right: -20px;
+    width: 200px;
+    background: rgba(10,10,10,0.9);
+  }
+  .about-card-float .fl {
+    font-size: 0.75rem; color: var(--text-muted);
+    font-weight: 300; margin-bottom: 4px;
+  }
+  .about-card-float .fv {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--green);
+  }
+
+  .about-body p {
+    font-size: 1rem; font-weight: 300; line-height: 1.8;
+    color: rgba(244,241,236,0.7);
+    margin-bottom: 20px;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    padding: 100px 5vw;
+    border-top: 1px solid var(--border);
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-top: 60px;
+  }
+  .contact-info h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem; font-weight: 800;
+    margin-bottom: 16px;
+  }
+  .contact-info p {
+    font-size: 0.92rem; font-weight: 300;
+    color: rgba(244,241,236,0.55);
+    line-height: 1.7; margin-bottom: 36px;
+  }
+  .social-link {
+    display: inline-flex; align-items: center; gap: 12px;
+    text-decoration: none;
+    color: var(--off-white);
+    padding: 14px 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 0.88rem; font-weight: 500;
+    transition: border-color 0.2s, background 0.2s;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  .social-link:hover { border-color: var(--green); background: var(--green-muted); }
+  .social-link .icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .wa-icon { background: #25d366; }
+  .li-icon { background: #0077b5; }
+  .social-link .meta { display: flex; flex-direction: column; }
+  .social-link .meta span { font-size: 0.72rem; color: var(--text-muted); font-weight: 300; }
+
+  /* FORM */
+  .contact-form-wrap h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem; font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .contact-form-wrap .sub {
+    font-size: 0.88rem; color: var(--text-muted); font-weight: 300;
+    margin-bottom: 28px;
+  }
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    font-size: 0.72rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--off-white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem; font-weight: 300;
+    padding: 13px 16px;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    resize: none;
+    appearance: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--green);
+    background: rgba(26,255,140,0.04);
+  }
+  .form-group select option { background: #1a1a1a; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .submit-btn {
+    width: 100%;
+    background: var(--green);
+    color: var(--black);
+    border: none;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.92rem; font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: opacity 0.2s, transform 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  .wa-note {
+    margin-top: 12px;
+    font-size: 0.78rem; color: var(--text-muted);
+    text-align: center;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 5vw;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1rem;
+  }
+  footer .logo span { color: var(--green); }
+  footer p {
+    font-size: 0.78rem; color: var(--text-muted); font-weight: 300;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SCROLL REVEALS */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .about-section,
+    .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .about-visual { height: 240px; }
+    .about-card-float { right: 0; }
+    .hero-stats { gap: 28px; }
+    .form-row { grid-template-columns: 1fr; }
+    nav .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Ayo<span>.</span>Digital</a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="nav-cta">Get in Touch</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Social Media & Digital Marketing</div>
+  <h1 class="hero-headline">
+    Grow your brand<br>
+    <span class="italic">online,</span><br>
+    <span class="accent">the smart way.</span>
+  </h1>
+  <p class="hero-sub">
+    Ayo Digital Media helps small businesses build a powerful online presence through content creation, advertising, and brand management.
+  </p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">
+      <span></span> Start a Conversation
+    </a>
+    <a href="#services" class="btn-secondary">
+      Explore Services →
+    </a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">4+</div>
+      <div class="stat-label">Core Services</div>
+    </div>
+    <div>
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Client Focused</div>
+    </div>
+    <div>
+      <div class="stat-num">SMBs</div>
+      <div class="stat-label">Target Market</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">Social Media Management</div>
+    <div class="marquee-item">Content Creation</div>
+    <div class="marquee-item">Facebook & Instagram Ads</div>
+    <div class="marquee-item">Brand Strategy</div>
+    <div class="marquee-item">Digital Marketing</div>
+    <div class="marquee-item">Online Growth</div>
+    <div class="marquee-item">Social Media Management</div>
+    <div class="marquee-item">Content Creation</div>
+    <div class="marquee-item">Facebook & Instagram Ads</div>
+    <div class="marquee-item">Brand Strategy</div>
+    <div class="marquee-item">Digital Marketing</div>
+    <div class="marquee-item">Online Growth</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="section-label">What We Do</div>
+  <h2 class="section-title reveal">Everything your brand needs to grow online.</h2>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <div class="service-name">Social Media Management</div>
+      <div class="service-desc">We handle your pages so you don't have to — consistent posting, engagement, and community growth across all platforms.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">02</div>
+      <div class="service-name">Content Creation</div>
+      <div class="service-desc">Eye-catching graphics, captions, and videos crafted to tell your brand story and stop the scroll.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">03</div>
+      <div class="service-name">Facebook & Instagram Advertising</div>
+      <div class="service-desc">Targeted ad campaigns that put your business in front of the right audience and turn clicks into customers.</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">04</div>
+      <div class="service-name">Brand Strategy Consulting</div>
+      <div class="service-desc">Positioning, messaging, and identity consulting to ensure your brand stands out in a crowded market.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-visual reveal">
+    <div class="about-card about-card-main">
+      <div class="big-text">ADM</div>
+      <div class="label">Agency Focus</div>
+      <div class="value">Small Business Growth</div>
+    </div>
+    <div class="about-card about-card-float">
+      <div class="fl">We serve</div>
+      <div class="fv">Startups · SMEs · Influencers</div>
+    </div>
+  </div>
+  <div class="about-body reveal">
+    <div class="section-label">Who We Are</div>
+    <h2 class="section-title" style="margin-bottom:24px">Your digital growth partner.</h2>
+    <p>Ayo Digital Media is a social media management and digital marketing agency built specifically for small businesses, entrepreneurs, and local brands who are ready to compete online.</p>
+    <p>We combine creative storytelling, strategic advertising, and data-driven brand management to help you attract more customers, build trust, and grow revenue — consistently.</p>
+    <a href="#contact" class="btn-primary" style="margin-top:16px; display:inline-flex">
+      Let's work together →
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-label">Get In Touch</div>
+  <h2 class="section-title reveal">Ready to grow your<br><span style="color:var(--green)">online presence?</span></h2>
+
+  <div class="contact-grid">
+    <!-- Social Links -->
+    <div class="contact-info reveal">
+      <h3>Reach us directly</h3>
+      <p>Drop us a message on WhatsApp for a quick response, or connect with us on LinkedIn to learn more about what we do.</p>
+
+      <a href="https://wa.me/2348151891927"
+         target="_blank" class="social-link">
+        <div class="icon wa-icon">💬</div>
+        <div class="meta">
+          Chat on WhatsApp
+          <span>Fast response · Usually within hours</span>
+        </div>
+        <span style="margin-left:auto; font-size:0.75rem; color:var(--text-muted)">→</span>
+      </a>
+
+      <a href="https://www.linkedin.com/company/ayo-digital-media"
+         target="_blank" class="social-link">
+        <div class="icon li-icon">in</div>
+        <div class="meta">
+          Follow on LinkedIn
+          <span>Updates, case studies & insights</span>
+        </div>
+        <span style="margin-left:auto; font-size:0.75rem; color:var(--text-muted)">→</span>
+      </a>
+
+      <div style="margin-top:32px; padding:20px; border:1px solid var(--border); border-radius:12px; background: var(--green-muted);">
+        <div style="font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:700; margin-bottom:8px; color:var(--green);">Who we work with</div>
+        <div style="font-size:0.85rem; color:rgba(244,241,236,0.6); line-height:1.7; font-weight:300;">
+          Startups, local businesses, e-commerce brands, service providers, and content creators who want to grow their audience and revenue online.
+        </div>
+      </div>
+    </div>
+
+    <!-- WhatsApp Form -->
+    <div class="contact-form-wrap reveal">
+      <h3>Send us a message</h3>
+      <p class="sub">Fill this in and we'll reach out on WhatsApp.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="fname" placeholder="e.g. Emeka" />
+        </div>
+        <div class="form-group">
+          <label>Phone / WhatsApp</label>
+          <input type="tel" id="fphone" placeholder="+234 ..." />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Business Name</label>
+        <input type="text" id="fbusiness" placeholder="Your business or brand name" />
+      </div>
+      <div class="form-group">
+        <label>Service Interested In</label>
+        <select id="fservice">
+          <option value="" disabled selected>Choose a service</option>
+          <option>Social Media Management</option>
+          <option>Content Creation</option>
+          <option>Facebook & Instagram Advertising</option>
+          <option>Brand Strategy Consulting</option>
+          <option>Not sure yet — need guidance</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell us about your goals</label>
+        <textarea id="fmessage" rows="4" placeholder="What do you want to achieve? Any details help..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="sendToWhatsApp()">
+        <span></span> Send via WhatsApp
+      </button>
+      <div class="wa-note">
+        <span>🔒</span> Clicking opens WhatsApp with your message pre-filled
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Ayo<span>.</span>Digital Media</div>
+  <p>Social Media Management · Content · Advertising · Brand Strategy</p>
+  <p>adelekejoshuaayodele@gmail.com</p>
+  <p style="color:rgba(136,136,136,0.5); font-size:0.72rem;">© 2026 Ayo Digital Media. All rights reserved.</p>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      ring.style.width = '54px';
+      ring.style.height = '54px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '10px';
+      cursor.style.height = '10px';
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // WhatsApp form
+  function sendToWhatsApp() {
+    const name = document.getElementById('fname').value.trim();
+    const phone = document.getElementById('fphone').value.trim();
+    const business = document.getElementById('fbusiness').value.trim();
+    const service = document.getElementById('fservice').value;
+    const message = document.getElementById('fmessage').value.trim();
+
+    if (!name) { alert('Please enter your name.'); return; }
+    if (!service) { alert('Please select a service.'); return; }
+
+    const text = `Hi Ayo Digital Media! 👋\n\n*Name:* ${name}\n*Phone:* ${phone || 'Not provided'}\n*Business:* ${business || 'Not provided'}\n*Service:* ${service}\n\n*Message:*\n${message || 'No additional message.'}`;
+
+    // Replace with actual WhatsApp number
+    const waNumber = '2340000000000';
+    const waURL = `https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`;
+    window.open(waURL, '_blank');
+  }
+</script>
+</body>
+</html>
